@@ -13,13 +13,15 @@ type document struct {
 	Id      bson.ObjectId `bson:"_id"`
 	Title   string        `bson:"title"`
 	Content string        `bson:"content"`
+	Author  string        `bson:"author"`
 }
 
 func main() {
+	const MONGO_URL string = "mongodb://localhost:27017/test"
 	uri := os.Getenv("MONGO_URL")
 	if uri == "" {
 		fmt.Println("no connection string provided")
-		os.Exit(1)
+		uri = MONGO_URL
 	}
 
 	martiniClass := martini.Classic()
@@ -41,13 +43,13 @@ func main() {
 		defer sess.Close()
 
 		var documentFound document
-		err = sess.DB("test").C("documents").Find(bson.M{}).One(&documentFound)
+		err = sess.DB("gopherdocs").C("documents").Find(bson.M{}).One(&documentFound)
 		if err != nil {
 			fmt.Printf("got an error finding a doc %v\n")
 			os.Exit(1)
 		}
 
-		return fmt.Sprintf("Found document: %+v\n", documentFound)
+		return fmt.Sprintf("Found document: %+v\nWith content: %+v\nAnd author: %+v", documentFound.Title, documentFound.Content, documentFound.Author)
 	})
 
 	martiniClass.Run()
