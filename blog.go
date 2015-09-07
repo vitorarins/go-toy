@@ -22,20 +22,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	// sess, err := mgo.Dial(uri)
-	// if err != nil {
-	// 	fmt.Printf("Can't connect to mongo, go error %v\n", err)
-	// 	os.Exit(1)
-	// }
-	// defer sess.Close()
-
-	// var documentFound document
-	// err = sess.DB("test").C("documents").Find(bson.M{}).One(&documentFound)
-	// if err != nil {
-	// 	fmt.Printf("got an error finding a doc %v\n")
-	// 	os.Exit(1)
-	// }
-
 	martiniClass := martini.Classic()
 	martiniClass.Get("/", func() string {
 		return "Hello world!"
